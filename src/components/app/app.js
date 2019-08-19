@@ -118,8 +118,8 @@ export default class App extends Component {
   render() {
     const { todoData, searchText, statusButtonActive } = this.state;
 
-    const visibleItems = this.search(todoData, searchText);
-    const filteredStatusItems = this.onStatusFilterItems(todoData, statusButtonActive)
+    const visibleItems = this.onStatusFilterItems(this.search(todoData, searchText), statusButtonActive);
+    // const filteredStatusItems = this.onStatusFilterItems(todoData, statusButtonActive)
     const doneCount = todoData.filter(el => el.done).length;
     const todoCount = todoData.length - doneCount;
 
@@ -136,7 +136,7 @@ export default class App extends Component {
         </div>
 
         <TodoList
-          todos={searchText ? visibleItems : filteredStatusItems}
+          todos={ visibleItems }
           onDeleted={this.deleteItem}
           onToggleImportant={this.onToggleImportant}
           onToggleDone={this.onToggleDone} />
