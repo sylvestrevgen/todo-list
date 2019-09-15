@@ -22,6 +22,22 @@ export default class App extends Component {
     statusButtonActive: "All"
   };
 
+  componentDidMount() {
+    const todoLS = localStorage.getItem("todos");
+
+    if (todoLS) {
+      this.setState({
+        todoData: JSON.parse(todoLS)
+      });
+    };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.todoData !== this.state.todoData) {
+      localStorage.setItem("todos", JSON.stringify(this.state.todoData))
+    }
+  }
+
   createTodoItem(label) {
     return {
       label,
@@ -99,9 +115,9 @@ export default class App extends Component {
   };
 
   onStatusFilterItems(items, btnType) {
-    if(btnType === "Active") {
+    if (btnType === "Active") {
       return items.filter(el => !el.done);
-    } else if(btnType === "Done") {
+    } else if (btnType === "Done") {
       return items.filter(el => el.done);
     } else {
       return items;
@@ -109,7 +125,7 @@ export default class App extends Component {
   };
 
   onBtnClick = (event) => {
-    if(event.target.textContent === this.state.statusButtonActive) return;
+    if (event.target.textContent === this.state.statusButtonActive) return;
     this.setState({
       statusButtonActive: event.target.textContent
     });
@@ -131,12 +147,12 @@ export default class App extends Component {
             onSearchChange={this.onSearchChange}
             value={searchText} />
           <ItemStatusFilter
-            onBtnClick={this.onBtnClick} 
-            statusButtonActive={this.state.statusButtonActive}/>
+            onBtnClick={this.onBtnClick}
+            statusButtonActive={this.state.statusButtonActive} />
         </div>
 
         <TodoList
-          todos={ visibleItems }
+          todos={visibleItems}
           onDeleted={this.deleteItem}
           onToggleImportant={this.onToggleImportant}
           onToggleDone={this.onToggleDone} />
